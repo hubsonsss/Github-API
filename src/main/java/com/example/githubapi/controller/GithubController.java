@@ -1,6 +1,5 @@
 package com.example.githubapi.controller;
 
-
 import com.example.githubapi.records.RepositoryResponse;
 import com.example.githubapi.service.GithubService;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class GithubController {
     }
 
     @GetMapping("/{username}/repositories")
-    public ResponseEntity<List<RepositoryResponse>> getUserRepositories(@PathVariable String username) {
+    public ResponseEntity<List<RepositoryResponse>> getUserRepositories(@PathVariable("username") String username) {
         List<RepositoryResponse> repositories = githubService.getRepositories(username);
         return ResponseEntity.ok(repositories);
     }

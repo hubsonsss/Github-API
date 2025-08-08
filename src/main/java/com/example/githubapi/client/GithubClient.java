@@ -1,6 +1,7 @@
 package com.example.githubapi.client;
 
 import com.example.githubapi.exception.GithubUserNotFoundException;
+import com.example.githubapi.exception.NoRepositoryException;
 import com.example.githubapi.records.GithubBranchResponse;
 import com.example.githubapi.records.GithubRepositoryResponse;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,12 @@ public class GithubClient {
         String url = "https://api.github.com/users/" + username + "/repos";
         try{
             GithubRepositoryResponse[] response = restTemplate.getForObject(url, GithubRepositoryResponse[].class);
+            if (response == null || response.length == 0) {;
+                throw new NoRepositoryException("User has no repositories");
+            }
+
             return Arrays.asList(response);
+
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 throw new GithubUserNotFoundException("User not found");
